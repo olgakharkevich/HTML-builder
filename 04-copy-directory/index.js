@@ -4,13 +4,17 @@ const path = require('path');
 const pathToFolder = path.join(__dirname, '/files');
 const pathToNewFolder = path.join(__dirname, '/files-copy');
 
-const copyDir = async () => {
+const copyDir = async (pathSrc, pathTarget) => {
     try {
-        await mkdir(pathToNewFolder, { recursive: true });
-        const files = await readdir(pathToFolder, { withFileTypes: true });
+        await mkdir(pathTarget, { recursive: true });
+        const files = await readdir(pathSrc, { withFileTypes: true });
 
         files.forEach(async (file) => {
-            await copyFile(path.join(pathToFolder, path.basename(file.name)), path.join(pathToNewFolder, path.basename(file.name)));
+            if (file.isDirectory()) {
+                await copyDir(path.join(pathSrc, file.name), path.join(pathTarget, file.name));
+            } else {
+                await copyFile(path.join(pathSrc, path.basename(file.name)), path.join(pathTarget, path.basename(file.name)));
+            }
         });
 
     } catch (err) {
@@ -18,4 +22,4 @@ const copyDir = async () => {
     }
 }
 
-copyDir();
+copyDir(pathToFolder, pathToNewFolder);
