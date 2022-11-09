@@ -10,7 +10,7 @@ const readFiles = async () => {
       files.forEach(async (file) => {
           if (file.isFile()) {  
            const stats = await stat(path.join(pathToFolder, file.name));
-           console.log(`${file.name} - ${path.extname(file.name)} - ${stats.size}b`);
+           console.log(`${path.basename(file.name, path.extname(file.name))} - ${path.extname(file.name).slice(1)} - ${stats.size}b`);
         }
       });
     } catch (err) {
