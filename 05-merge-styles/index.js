@@ -11,7 +11,7 @@ const createBundle = async () => {
 
         const files = await readdir(pathToFolder, { withFileTypes: true });
 
-        files.forEach(async (file) => {
+        files.forEach((file) => {
             if (file.isFile() && path.extname(file.name) === '.css') {
                 const stream = createReadStream(path.join(pathToFolder, file.name));
 
